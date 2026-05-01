@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "442918539915",
+    "project_id": "wordverse-fedc7",
+    "storage_bucket": "wordverse-fedc7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442918539915:android:77d424f952a167143f7a8e",
+        "android_client_info": {
+          "package_name": "com.senderss.wordverse"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdOJ7jI0VdTVBIdCKGckFXyU1GwnDYRBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
