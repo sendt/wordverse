@@ -32,7 +32,7 @@ Dimensions.addEventListener("change", ({ window }) => {
 const settings = {
   haptic: false,
   sound: true,
-  bgMusic: true,
+  bgMusic: false,
   menuSound: true,
   bgVolume: 0.35,
 };
@@ -1369,7 +1369,7 @@ function GoalScreen({
               </TouchableOpacity>
             </View>
             <View style={{ gap: 12 }}>
-              <BgMusicRow />
+              {/* BgMusicRow — yeni müzik eklenince geri açılacak */}
               <View
                 style={{
                   flexDirection: "row",
