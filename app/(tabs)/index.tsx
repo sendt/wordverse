@@ -7,14 +7,22 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   Alert,
   Animated,
-  AppState, Dimensions,
+  AppState,
+  Dimensions,
   Easing,
-  FlatList, Image, Linking, PanResponder, ScrollView, SectionList, StatusBar,
+  FlatList,
+  Image,
+  Linking,
+  PanResponder,
+  Platform,
+  ScrollView,
+  SectionList,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { deleteSet, downloadSet, uploadSet } from "../../firebase";
@@ -626,7 +634,13 @@ function Screen({
   const insets = useSafeAreaInsets();
   return (
     <View
-      style={{ flex: 1, backgroundColor: bg, paddingTop: insets.top, paddingBottom: insets.bottom, ...style }}
+      style={{
+        flex: 1,
+        backgroundColor: bg,
+        paddingTop: insets.top,
+        paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 32 : 0),
+        ...style,
+      }}
     >
       <StatusBar hidden={false} backgroundColor={bg} barStyle="dark-content" />
       {children}
@@ -6980,7 +6994,8 @@ function CustomSetsScreen({
             style={{
               paddingVertical: 8,
               paddingHorizontal: 12,
-              backgroundColor: sets.length >= MAX_CUSTOM_SETS ? "#cbd5e1" : "#6366f1",
+              backgroundColor:
+                sets.length >= MAX_CUSTOM_SETS ? "#cbd5e1" : "#6366f1",
               borderRadius: 12,
             }}
           >
@@ -6999,7 +7014,9 @@ function CustomSetsScreen({
             paddingVertical: 10,
             paddingHorizontal: 16,
             borderBottomWidth: 1,
-            borderBottomColor: msg.ok ? "rgba(34,197,94,0.2)" : "rgba(239,68,68,0.2)",
+            borderBottomColor: msg.ok
+              ? "rgba(34,197,94,0.2)"
+              : "rgba(239,68,68,0.2)",
           }}
         >
           <Text
@@ -7443,7 +7460,10 @@ function CustomSetsScreen({
                                 await onImport(code);
                                 setMsg({ text: "✅ Güncellendi!", ok: true });
                               } catch (_) {
-                                setMsg({ text: "📡 İnternet bağlantısı yok", ok: false });
+                                setMsg({
+                                  text: "📡 İnternet bağlantısı yok",
+                                  ok: false,
+                                });
                               }
                               setTimeout(() => setMsg(null), 3000);
                             }
@@ -7585,7 +7605,10 @@ export default function App() {
     // Güncelleme değilse (aynı id yok) yeni ekleme sayılır
     const isUpdate = customSets.some((s: CustomSet) => s.id === sheetId);
     if (!isUpdate && customSets.length >= MAX_CUSTOM_SETS) {
-      return { ok: false, msg: `En fazla ${MAX_CUSTOM_SETS} kelime seti oluşturabilirsin. Önce bir setini sil.` };
+      return {
+        ok: false,
+        msg: `En fazla ${MAX_CUSTOM_SETS} kelime seti oluşturabilirsin. Önce bir setini sil.`,
+      };
     }
     try {
       const url =
@@ -7687,7 +7710,7 @@ export default function App() {
         await AsyncStorage.setItem("wv_custom_sets", JSON.stringify(updated));
         setShareResult({ code: res.code!, isUpdate: !!existingCode });
       } else {
-        if (res.msg === '__offline__') {
+        if (res.msg === "__offline__") {
           Alert.alert(
             "📡 İnternet Bağlantısı Yok",
             "Paylaşmak için internet bağlantısı gerekli. Bağlantını kontrol edip tekrar dene.",
@@ -7712,7 +7735,7 @@ export default function App() {
     try {
       const res = await downloadSet(code);
       if (!res.ok || !res.words) {
-        if (res.msg === '__offline__') {
+        if (res.msg === "__offline__") {
           Alert.alert(
             "📡 İnternet Bağlantısı Yok",
             "Seti indirmek için internet bağlantısı gerekli. Bağlantını kontrol edip tekrar dene.",
