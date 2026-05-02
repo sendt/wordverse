@@ -2931,7 +2931,7 @@ const RUSH_LIVES = 5;
 const GATE_H = 56;
 const GAP = 8;
 const BALL_R = 18;
-const BALL_Y = H * 0.82;
+const BALL_Y = H * 0.74;
 
 // Perspektif: y=0 (ufuk) → dar, y=H (alt) → geniş
 const HORIZ_Y = 0.05; // ufuk noktası (ekranın %5'i — neredeyse üst)
