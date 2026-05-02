@@ -41,6 +41,15 @@
           "resizeMode": "contain",
           "backgroundColor": "#f0f4ff"
         }
+      ],
+      "@sentry/react-native",
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "wordverse",
+          "organization": "aibuildapp34"
+        }
       ]
     ],
     "experiments": {
