@@ -638,7 +638,6 @@ function Screen({
         flex: 1,
         backgroundColor: bg,
         paddingTop: insets.top,
-        paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0),
         ...style,
       }}
     >
@@ -1845,7 +1844,7 @@ function LevelScreen({
   const gm = GOALS.find((g) => g.id === goal)!;
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
       {/* Compact header */}
@@ -2118,7 +2117,7 @@ function LearnedWordsScreen({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f8faff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f8faff", paddingTop: insets.top }}
     >
       <StatusBar backgroundColor="#f8faff" barStyle="dark-content" />
       <View
@@ -2931,7 +2930,7 @@ const RUSH_LIVES = 5;
 const GATE_H = 56;
 const GAP = 8;
 const BALL_R = 18;
-const BALL_Y = H * 0.74;
+const BALL_Y = H * 0.82;
 
 // Perspektif: y=0 (ufuk) → dar, y=H (alt) → geniş
 const HORIZ_Y = 0.05; // ufuk noktası (ekranın %5'i — neredeyse üst)
@@ -3368,7 +3367,7 @@ function WordRushGame({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#1a1a2e", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
+      style={{ flex: 1, backgroundColor: "#1a1a2e", paddingTop: insets.top }}
     >
       {pausedRush && (
         <PauseOverlay onResume={togglePauseRush} onMenu={onBack} />
@@ -3955,7 +3954,6 @@ function FallingGame({
             ? "#fff1f2"
             : "#f0f9ff",
         paddingTop: insets.top,
-        paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0),
       }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
@@ -4403,7 +4401,7 @@ function MatchGame({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
       {pausedMatch && (
@@ -4931,7 +4929,7 @@ function PairsGame({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f8faff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f8faff", paddingTop: insets.top }}
     >
       <StatusBar backgroundColor="#f8faff" barStyle="dark-content" />
       <SoundWarningBanner />
@@ -5619,7 +5617,7 @@ function PinballGame({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
       {paused && <PauseOverlay onResume={togglePause} onMenu={onBack} />}
@@ -6280,7 +6278,7 @@ function SetBuilderScreen({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
 
@@ -6973,7 +6971,7 @@ function CustomSetsScreen({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
 
