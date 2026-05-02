@@ -626,7 +626,7 @@ function Screen({
   const insets = useSafeAreaInsets();
   return (
     <View
-      style={{ flex: 1, backgroundColor: bg, paddingTop: insets.top, ...style }}
+      style={{ flex: 1, backgroundColor: bg, paddingTop: insets.top, paddingBottom: insets.bottom, ...style }}
     >
       <StatusBar hidden={false} backgroundColor={bg} barStyle="dark-content" />
       {children}
