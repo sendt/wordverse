@@ -971,7 +971,7 @@ function GoalScreen({
   });
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}>
+    <View style={{ flex: 1, backgroundColor: "#f0f4ff" }}>
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
       {__DEV__ && (
         <View
