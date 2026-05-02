@@ -971,8 +971,26 @@ function GoalScreen({
   });
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#f0f4ff" }}>
+    <View style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}>
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
+      {__DEV__ && (
+        <View
+          style={{
+            position: "absolute",
+            top: insets.top + 4,
+            right: 4,
+            backgroundColor: "rgba(255,0,0,0.85)",
+            paddingHorizontal: 6,
+            paddingVertical: 2,
+            borderRadius: 4,
+            zIndex: 9999,
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 10, fontWeight: "900" }}>
+            T:{Math.round(insets.top)} B:{Math.round(insets.bottom)}
+          </Text>
+        </View>
+      )}
       {/* Support modal */}
       {showSupport && (
         <View
