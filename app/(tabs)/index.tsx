@@ -7687,7 +7687,15 @@ export default function App() {
         await AsyncStorage.setItem("wv_custom_sets", JSON.stringify(updated));
         setShareResult({ code: res.code!, isUpdate: !!existingCode });
       } else {
-        Alert.alert("Hata", res.msg);
+        if (res.msg === '__offline__') {
+          Alert.alert(
+            "📡 İnternet Bağlantısı Yok",
+            "Paylaşmak için internet bağlantısı gerekli. Bağlantını kontrol edip tekrar dene.",
+            [{ text: "Tamam" }],
+          );
+        } else {
+          Alert.alert("Hata", res.msg);
+        }
       }
     } catch (e: any) {
       Alert.alert(
@@ -7704,7 +7712,15 @@ export default function App() {
     try {
       const res = await downloadSet(code);
       if (!res.ok || !res.words) {
-        Alert.alert("Hata", res.msg);
+        if (res.msg === '__offline__') {
+          Alert.alert(
+            "📡 İnternet Bağlantısı Yok",
+            "Seti indirmek için internet bağlantısı gerekli. Bağlantını kontrol edip tekrar dene.",
+            [{ text: "Tamam" }],
+          );
+        } else {
+          Alert.alert("Hata", res.msg);
+        }
         return;
       }
       // Aynı kod daha önce indirilmişse güncelle, yoksa yeni ekle

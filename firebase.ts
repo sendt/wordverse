@@ -62,7 +62,8 @@ export async function uploadSet(set: {
     }
     return { ok: false, msg: 'Kod üretilemedi, tekrar dene.' };
   } catch (e: any) {
-    return { ok: false, msg: 'Yükleme hatası: ' + e.message };
+    const isOffline = e.code === 'unavailable' || e.message?.includes('offline') || e.message?.includes('network') || e.message?.includes('failed to get');
+    return { ok: false, msg: isOffline ? '__offline__' : 'Yükleme hatası: ' + e.message };
   }
 }
 
@@ -100,6 +101,7 @@ export async function downloadSet(code: string): Promise<{
       msg: `"${data.name}" seti indirildi!`,
     };
   } catch (e: any) {
-    return { ok: false, msg: 'İndirme hatası: ' + e.message };
+    const isOffline = e.code === 'unavailable' || e.message?.includes('offline') || e.message?.includes('network') || e.message?.includes('failed to get');
+    return { ok: false, msg: isOffline ? '__offline__' : 'İndirme hatası: ' + e.message };
   }
 }
