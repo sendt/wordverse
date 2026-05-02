@@ -644,6 +644,24 @@ function Screen({
     >
       <StatusBar hidden={false} backgroundColor={bg} barStyle="dark-content" />
       {children}
+      {__DEV__ && (
+        <View
+          style={{
+            position: "absolute",
+            top: insets.top + 4,
+            right: 4,
+            backgroundColor: "rgba(255,0,0,0.85)",
+            paddingHorizontal: 6,
+            paddingVertical: 2,
+            borderRadius: 4,
+            zIndex: 9999,
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 10, fontWeight: "900" }}>
+            T:{Math.round(insets.top)} B:{Math.round(insets.bottom)} P:{Platform.OS}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
