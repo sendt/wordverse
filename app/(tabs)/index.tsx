@@ -638,7 +638,7 @@ function Screen({
         flex: 1,
         backgroundColor: bg,
         paddingTop: insets.top,
-        paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 32 : 0),
+        paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0),
         ...style,
       }}
     >
@@ -1809,7 +1809,7 @@ function LevelScreen({
   const gm = GOALS.find((g) => g.id === goal)!;
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 32 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
       {/* Compact header */}
@@ -2082,7 +2082,7 @@ function LearnedWordsScreen({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f8faff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 32 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f8faff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
     >
       <StatusBar backgroundColor="#f8faff" barStyle="dark-content" />
       <View
@@ -3332,7 +3332,7 @@ function WordRushGame({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#1a1a2e", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 32 : 0) }}
+      style={{ flex: 1, backgroundColor: "#1a1a2e", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
     >
       {pausedRush && (
         <PauseOverlay onResume={togglePauseRush} onMenu={onBack} />
@@ -3919,7 +3919,7 @@ function FallingGame({
             ? "#fff1f2"
             : "#f0f9ff",
         paddingTop: insets.top,
-        paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 32 : 0),
+        paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0),
       }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
@@ -4367,7 +4367,7 @@ function MatchGame({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 32 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
       {pausedMatch && (
@@ -4895,7 +4895,7 @@ function PairsGame({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f8faff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 32 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f8faff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
     >
       <StatusBar backgroundColor="#f8faff" barStyle="dark-content" />
       <SoundWarningBanner />
@@ -5583,7 +5583,7 @@ function PinballGame({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 32 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
       {paused && <PauseOverlay onResume={togglePause} onMenu={onBack} />}
@@ -6244,7 +6244,7 @@ function SetBuilderScreen({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 32 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
 
@@ -6937,7 +6937,7 @@ function CustomSetsScreen({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 32 : 0) }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: Math.max(insets.bottom, Platform.OS === "android" ? 56 : 0) }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
 
