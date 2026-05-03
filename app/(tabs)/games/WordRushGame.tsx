@@ -81,12 +81,14 @@ export default function WordRushGame({
   onBack: () => void;
 }) {
   const insets = useSafeAreaInsets();
-  const gameH = H - insets.bottom;
+  // Gerçek oyun alanı yüksekliği — onLayout ile ölçülür
+  const gvHRef = useRef(H - insets.top - 110 - insets.bottom); // başlangıç tahmini
+  const [gvH, setGvH] = useState(gvHRef.current);
   const base = SPEEDS[speed].base, isAuto = speed === "auto";
   const bXA = useRef(new Animated.Value(W / 2)).current;
   const bXR = useRef(W / 2);
-  const bYA = useRef(new Animated.Value(gameH * 0.82)).current;
-  const bYR = useRef(gameH * 0.82);
+  const bYA = useRef(new Animated.Value(gvHRef.current * 0.84)).current;
+  const bYR = useRef(gvHRef.current * 0.84);
   const spdR = useRef(base), strR = useRef(0), livesR = useRef(RUSH_LIVES);
   const rafR = useRef(0), ltR = useRef(0);
   const gRef = useRef<Gate[]>([]);
@@ -119,7 +121,7 @@ export default function WordRushGame({
         const { left, right } = roadEdge(bYR.current, gameH);
         const x = Math.max(left + 24, Math.min(right - 24, e.nativeEvent.pageX));
         const rawYG = e.nativeEvent.pageY - (insets?.top ?? 0) - 80;
-        const y = Math.max(H * HORIZ_Y + 40, Math.min(gameH * 0.9, rawYG));
+        const y = Math.max(H * HORIZ_Y + 40, Math.min(gvHRef.current * 0.9, rawYG));
         bXR.current = x; bXA.setValue(x);
         bYR.current = y; bYA.setValue(y);
       },
@@ -128,7 +130,7 @@ export default function WordRushGame({
         const { left, right } = roadEdge(bYR.current, gameH);
         const x = Math.max(left + 24, Math.min(right - 24, e.nativeEvent.pageX));
         const rawY = e.nativeEvent.pageY - (insets?.top ?? 0) - 80;
-        const y = Math.max(H * HORIZ_Y + 40, Math.min(gameH * 0.9, rawY));
+        const y = Math.max(H * HORIZ_Y + 40, Math.min(gvHRef.current * 0.9, rawY));
         bXR.current = x; bXA.setValue(x);
         bYR.current = y; bYA.setValue(y);
       },
@@ -219,7 +221,7 @@ export default function WordRushGame({
         changed = true;
         return { ...gate, state: hit ? ("ok" as const) : ("bad" as const) };
       });
-      list = list.filter((g) => g.y < gameH + 100 && g.opacity > 0.02);
+      list = list.filter((g) => g.y < gvHRef.current + 100 && g.opacity > 0.02);
       if (!list.find((g) => g.state === "fall") && !isOver.current) {
         const nx = makeGate(sr);
         list = [...list, nx];
@@ -304,17 +306,30 @@ export default function WordRushGame({
       </View>
 
       {/* Road */}
-      <View style={{ flex: 1, overflow: "hidden", position: "relative" }} {...pan.panHandlers}>
+      <View
+        style={{ flex: 1, overflow: "hidden", position: "relative" }}
+        onLayout={e => {
+          const h = e.nativeEvent.layout.height;
+          if (h > 50 && Math.abs(h - gvHRef.current) > 5) {
+            gvHRef.current = h;
+            setGvH(h);
+            const newY = h * 0.84;
+            bYA.setValue(newY);
+            bYR.current = newY;
+          }
+        }}
+        {...pan.panHandlers}
+      >
         <View style={{ position: "absolute", inset: 0, backgroundColor: "#2d3748" }} />
-        <View style={{ position: "absolute", top: 0, left: 0, right: 0, height: gameH * HORIZ_Y, backgroundColor: "#1e2d3d", opacity: 0.6 }} />
+        <View style={{ position: "absolute", top: 0, left: 0, right: 0, height: gvH * HORIZ_Y, backgroundColor: "#1e2d3d", opacity: 0.6 }} />
 
         {/* Sarı kenar noktaları */}
         {Array.from({ length: 22 }).map((_, i) => {
           const spacing = 55;
           const rawY = H * HORIZ_Y + i * spacing + roadOffset - spacing;
-          if (rawY < H * HORIZ_Y - 10 || rawY > gameH) return null;
-          const t = Math.max(0, (rawY / gameH - HORIZ_Y) / (1 - HORIZ_Y));
-          const { left, right } = roadEdge(rawY, gameH);
+          if (rawY < H * HORIZ_Y - 10 || rawY > gvH) return null;
+          const t = Math.max(0, (rawY / gvH - HORIZ_Y) / (1 - HORIZ_Y));
+          const { left, right } = roadEdge(rawY, gvH);
           const thick = Math.max(2, t * 6);
           const h = Math.max(3, t * 10);
           return (
@@ -329,8 +344,8 @@ export default function WordRushGame({
         {Array.from({ length: 22 }).map((_, i) => {
           const spacing = 60;
           const rawY = H * HORIZ_Y + i * spacing + roadOffset - spacing;
-          if (rawY < H * HORIZ_Y || rawY > gameH) return null;
-          const t = (rawY / gameH - HORIZ_Y) / (1 - HORIZ_Y);
+          if (rawY < H * HORIZ_Y || rawY > gvH) return null;
+          const t = (rawY / gvH - HORIZ_Y) / (1 - HORIZ_Y);
           const h = Math.max(4, t * 28);
           return (
             <View key={i} style={{ position: "absolute", top: rawY, left: W / 2 - 2, width: Math.max(2, t * 5), height: h, borderRadius: 2, backgroundColor: `rgba(255,255,255,${0.15 + t * 0.15})` }} />
@@ -339,8 +354,8 @@ export default function WordRushGame({
 
         {/* Kapılar */}
         {gates.map((gate) => {
-          const sc2 = gateScale(gate.y, gameH);
-          const { left, width } = roadEdge(gate.y, gameH);
+          const sc2 = gateScale(gate.y, gvH);
+          const { left, width } = roadEdge(gate.y, gvH);
           const lG = gate.state === "ok" && gate.cLeft, rG = gate.state === "ok" && !gate.cLeft;
           const lR = gate.state === "bad" && gate.cLeft, rR = gate.state === "bad" && !gate.cLeft;
           const gw = width / 2 - GAP * sc2;

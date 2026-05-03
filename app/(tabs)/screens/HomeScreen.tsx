@@ -1,6 +1,6 @@
 import * as Haptics from "expo-haptics";
 import React, { useState } from "react";
-import { Image, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { Image, Linking, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { hap, hapSel, playMenuTick } from "../../../lib/audio";
 import { GAMES_META, GOALS, LEVELS, SPEEDS, SpeedMode, GameId } from "../../../lib/constants";
@@ -367,6 +367,33 @@ export default function HomeScreen({
             </TouchableOpacity>
           ))}
         </View>
+
+        {/* Geri Bildirim */}
+        <TouchableOpacity
+          onPress={() => Linking.openURL(
+            "mailto:by.ram.aydnnn@gmail.com?subject=WordVerse%20Geri%20Bildirim"
+          )}
+          style={{
+            marginTop: 16,
+            marginBottom: 8,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            paddingVertical: 12,
+            paddingHorizontal: 24,
+            borderRadius: 50,
+            backgroundColor: "rgba(99,102,241,0.08)",
+            borderWidth: 1.5,
+            borderColor: "rgba(99,102,241,0.2)",
+            alignSelf: "center",
+          }}
+        >
+          <Text style={{ fontSize: 16 }}>💬</Text>
+          <Text style={{ fontSize: 13, color: "#6366f1", fontWeight: "700" }}>
+            Geri Bildirim & Öneri
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );

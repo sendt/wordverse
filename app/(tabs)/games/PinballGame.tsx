@@ -28,19 +28,20 @@ export default function PinballGame({
   const spd = SPEEDS[speed];
   const SPEED_MULT = spd.base / 90;
 
-  const HEADER_H = insets.top + 175;
-  const GAME_H = H - HEADER_H - insets.bottom;
+  // onLayout ile gerçek game area yüksekliği ölçülür
+  const gvHRef = useRef(H - insets.top - 165 - insets.bottom); // başlangıç tahmini
+  const [gvH, setGvH] = useState(gvHRef.current);
   const BALL_R2 = 18;
   const PAD_W = W / 3;
   const PAD_H = 14;
-  const PAD_Y = GAME_H * 0.82;
-  const BKT_Y = GAME_H * 0.88;
-  const BKT_H = GAME_H * 0.12;
+  const PAD_Y = gvH * 0.82;
+  const BKT_Y = gvH * 0.88;
+  const BKT_H = gvH * 0.12;
   const BUMP_POSITIONS = [
-    { x: W * 0.25, y: GAME_H * 0.22 },
-    { x: W * 0.75, y: GAME_H * 0.22 },
-    { x: W * 0.15, y: GAME_H * 0.45 },
-    { x: W * 0.85, y: GAME_H * 0.45 },
+    { x: W * 0.25, y: gvH * 0.22 },
+    { x: W * 0.75, y: gvH * 0.22 },
+    { x: W * 0.15, y: gvH * 0.45 },
+    { x: W * 0.85, y: gvH * 0.45 },
   ];
 
   const [target, setTarget] = useState(() => sr.next());
@@ -58,10 +59,10 @@ export default function PinballGame({
   bucketsRef.current = buckets;
 
   const bxRef = useRef(W / 2);
-  const byRef = useRef(GAME_H * 0.12);
+  const byRef = useRef(gvHRef.current * 0.12);
   const vxRef = useRef((Math.random() - 0.5) * 100 * SPEED_MULT);
   const vyRef = useRef(90 * SPEED_MULT);
-  const [bPos, setBPos] = useState({ x: W / 2, y: GAME_H * 0.12 });
+  const [bPos, setBPos] = useState({ x: W / 2, y: gvHRef.current * 0.12 });
   const padRef = useRef(W / 2 - PAD_W / 2);
   const [padX, setPadX] = useState(W / 2 - PAD_W / 2);
   const [hitBump, setHitBump] = useState<number | null>(null);
@@ -89,7 +90,7 @@ export default function PinballGame({
     while (positions.length < 4) {
       let valid = true;
       const newX = Math.random() * (W - 2 * padding) + padding;
-      const newY = Math.random() * (GAME_H * 0.5 - 2 * padding) + padding;
+      const newY = Math.random() * (gvHRef.current * 0.5 - 2 * padding) + padding;
       for (const p of positions) {
         if (Math.hypot(newX - p.x, newY - p.y) < bumperRadius * 4) valid = false;
       }
@@ -105,7 +106,7 @@ export default function PinballGame({
   const togglePause = () => { pausedRef.current = !pausedRef.current; setPaused((p) => !p); };
   const resetBall = () => {
     bxRef.current = W / 2 + (Math.random() - 0.5) * W * 0.3;
-    byRef.current = GAME_H * 0.12;
+    byRef.current = gvHRef.current * 0.12;
     vxRef.current = (Math.random() - 0.5) * 100 * SPEED_MULT;
     vyRef.current = 90 * SPEED_MULT;
     processingRef.current = false;
@@ -258,7 +259,19 @@ export default function PinballGame({
         </TouchableOpacity>
       </View>
 
-      <View style={{ flex: 1, position: "relative", overflow: "hidden", backgroundColor: "#e8eeff" }} {...panPad.panHandlers}>
+      <View
+        style={{ flex: 1, position: "relative", overflow: "hidden", backgroundColor: "#e8eeff" }}
+        onLayout={e => {
+          const h = e.nativeEvent.layout.height;
+          if (h > 50 && Math.abs(h - gvHRef.current) > 5) {
+            gvHRef.current = h;
+            setGvH(h);
+            byRef.current = h * 0.12;
+            setBPos({ x: W / 2, y: h * 0.12 });
+          }
+        }}
+        {...panPad.panHandlers}
+      >
         {[0.33, 0.66].map((f, i) => (
           <View key={i} style={{ position: "absolute", top: 0, bottom: 0, left: W * f, width: 1, backgroundColor: "rgba(148,163,184,0.15)" }} />
         ))}
@@ -288,7 +301,7 @@ export default function PinballGame({
         ))}
 
         {flash && (
-          <View style={{ position: "absolute", top: GAME_H * 0.08, left: 0, right: 0, alignItems: "center", zIndex: 99, pointerEvents: "none" }}>
+          <View style={{ position: "absolute", top: gvH * 0.08, left: 0, right: 0, alignItems: "center", zIndex: 99, pointerEvents: "none" }}>
             <View style={{ backgroundColor: flash.ok ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.12)", borderRadius: 12, paddingVertical: 8, paddingHorizontal: 18, borderWidth: 1.5, borderColor: flash.ok ? "rgba(34,197,94,0.4)" : "rgba(239,68,68,0.35)" }}>
               <Text style={{ fontSize: 13, fontWeight: "900", color: flash.ok ? "#16a34a" : "#ef4444", textAlign: "center" }}>{flash.text}</Text>
             </View>

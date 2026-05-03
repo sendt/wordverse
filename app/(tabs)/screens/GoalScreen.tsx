@@ -684,13 +684,12 @@ export default function GoalScreen({
         )}
       {/* ⚙️ Ayarlar Modal — GoalScreen */}
       {showSettings && (
-        <View
+        <TouchableOpacity
+          activeOpacity={1}
+          onPress={() => setShowSettings(false)}
           style={{
             position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
+            top: 0, left: 0, right: 0, bottom: 0,
             backgroundColor: "rgba(15,23,42,0.85)",
             zIndex: 9999,
             alignItems: "center",
@@ -698,7 +697,7 @@ export default function GoalScreen({
             padding: 24,
           }}
         >
-          <View
+          <TouchableOpacity activeOpacity={1} onPress={() => {}}
             style={{
               backgroundColor: "#fff",
               borderRadius: 24,
@@ -812,8 +811,8 @@ export default function GoalScreen({
                 <SettingToggle icon="📳" label="" settingKey="haptic" />
               </View>
             </View>
-          </View>
-        </View>
+          </TouchableOpacity>
+        </TouchableOpacity>
       )}
 
       {/* Dişli çark — sağ üst */}
