@@ -20,6 +20,7 @@ export default function HomeScreen({
   onGoal,
   onSets,
   onShowLearned,
+  onFlashcard,
   speed,
   onSpeedChange,
   activeSetName,
