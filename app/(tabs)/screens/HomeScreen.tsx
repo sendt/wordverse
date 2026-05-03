@@ -248,11 +248,11 @@ export default function HomeScreen({
         {/* Ayarlar dişli çark — sağ üst köşede zaten var, toggle'lar modal'e taşındı */}
         <Text
           style={{
-            fontSize: 9,
-            color: "#94a3b8",
-            letterSpacing: 4,
+            fontSize: 12,
+            color: "#334155",
+            letterSpacing: 3,
             textTransform: "uppercase",
-            fontWeight: "700",
+            fontWeight: "800",
             marginBottom: 10,
             textAlign: "center",
           }}
@@ -304,11 +304,11 @@ export default function HomeScreen({
         </View>
         <Text
           style={{
-            fontSize: 9,
-            color: "#94a3b8",
-            letterSpacing: 4,
+            fontSize: 12,
+            color: "#334155",
+            letterSpacing: 3,
             textTransform: "uppercase",
-            fontWeight: "700",
+            fontWeight: "800",
             marginBottom: 10,
             textAlign: "center",
           }}

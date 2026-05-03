@@ -300,24 +300,6 @@ export default function GoalScreen({
   return (
     <View style={{ flex: 1, backgroundColor: "#f0f4ff" }}>
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
-      {__DEV__ && (
-        <View
-          style={{
-            position: "absolute",
-            top: insets.top + 4,
-            right: 4,
-            backgroundColor: "rgba(255,0,0,0.85)",
-            paddingHorizontal: 6,
-            paddingVertical: 2,
-            borderRadius: 4,
-            zIndex: 9999,
-          }}
-        >
-          <Text style={{ color: "white", fontSize: 10, fontWeight: "900" }}>
-            T:{Math.round(insets.top)} B:{Math.round(insets.bottom)}
-          </Text>
-        </View>
-      )}
       {/* Support modal */}
       {showSupport && (
         <View
@@ -835,322 +817,98 @@ export default function GoalScreen({
       )}
 
       {/* Dişli çark — sağ üst */}
-      <View
-        style={{
-          position: "absolute",
-          top: insets.top + 12,
-          right: 20,
-          zIndex: 100,
-        }}
-      >
+      <View style={{ position: "absolute", top: insets.top + 10, right: 16, zIndex: 100 }}>
         <TouchableOpacity
-          onPress={() => {
-            playMenuTick();
-            setShowSettings(true);
-          }}
-          style={{
-            width: 38,
-            height: 38,
-            borderRadius: 19,
-            backgroundColor: "rgba(99,102,241,0.1)",
-            borderWidth: 1,
-            borderColor: "rgba(99,102,241,0.25)",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+          onPress={() => { playMenuTick(); setShowSettings(true); }}
+          style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(99,102,241,0.1)", borderWidth: 1, borderColor: "rgba(99,102,241,0.25)", alignItems: "center", justifyContent: "center" }}
         >
-          <Text style={{ fontSize: 18 }}>⚙️</Text>
+          <Text style={{ fontSize: 17 }}>⚙️</Text>
         </TouchableOpacity>
       </View>
 
-      <ScrollView
-        contentContainerStyle={{
-          alignItems: "center",
-          padding: 24,
-          paddingTop: insets.top + 24,
-          paddingBottom: Math.max(40, insets.bottom + 24),
-        }}
-      >
-        {/* Globe — emoji + glow, sade ama etkili */}
-        <View style={{ alignItems: "center", marginBottom: 14 }}>
-          <Animated.View
-            style={{
-              transform: [{ rotate: rotateY }, { scale: scaleGlobe }],
-              shadowColor: "#3b82f6",
-              shadowOffset: { width: 0, height: 0 },
-              shadowOpacity: 0.5,
-              shadowRadius: 24,
-            }}
-          >
-            <Text style={{ fontSize: 76 }}>🌍</Text>
+      {/* Ana içerik — scroll yok, tek ekrana sığdır */}
+      <View style={{ flex: 1, paddingTop: insets.top + 12, paddingBottom: insets.bottom + 12, paddingHorizontal: 20 }}>
+        {/* Başlık + Globe */}
+        <View style={{ alignItems: "center", marginBottom: 12 }}>
+          <Animated.View style={{ transform: [{ rotate: rotateY }, { scale: scaleGlobe }] }}>
+            <Text style={{ fontSize: 52 }}>🌍</Text>
           </Animated.View>
-          {/* Glow ring */}
-          <Animated.View
-            style={{
-              position: "absolute",
-              width: 90,
-              height: 90,
-              borderRadius: 45,
-              borderWidth: 1,
-              borderColor: `rgba(59,130,246,0.25)`,
-              transform: [{ scale: scaleGlobe }],
-            }}
-          />
-          {/* Shadow */}
-          <View
-            style={{
-              width: 60,
-              height: 10,
-              borderRadius: 30,
-              marginTop: -4,
-              backgroundColor: "rgba(59,130,246,0.12)",
-            }}
-          />
+          <Text style={{ fontSize: 22, fontWeight: "900", color: "#1e1b4b", letterSpacing: 3, marginTop: 4 }}>
+            WORDVERSE
+          </Text>
+          <Text style={{ fontSize: 10, color: "#94a3b8", letterSpacing: 2, textTransform: "uppercase", marginTop: 2 }}>
+            Oynayarak İngilizce Öğren
+          </Text>
         </View>
-        <Text
-          style={{
-            fontSize: 28,
-            fontWeight: "900",
-            color: "#1e1b4b",
-            letterSpacing: 3,
-            marginBottom: 4,
-          }}
-        >
-          WORDVERSE
-        </Text>
-        <Text
-          style={{
-            fontSize: 11,
-            color: "#94a3b8",
-            letterSpacing: 3,
-            textTransform: "uppercase",
-            marginBottom: 28,
-          }}
-        >
-          Oynayarak İngilizce Öğren
-        </Text>
-        <Steps step={1} total={3} />
-        <Text
-          style={{
-            fontSize: 15,
-            color: "#64748b",
-            fontWeight: "700",
-            marginBottom: 16,
-            textAlign: "center",
-          }}
-        >
+
+        <Text style={{ fontSize: 13, color: "#475569", fontWeight: "700", marginBottom: 10, textAlign: "center" }}>
           Ne için öğreniyorsun?
         </Text>
-        <View style={{ width: "100%", gap: 12, marginBottom: 32 }}>
+
+        {/* 3 seçenek — hepsi aynı kapsayıcıda */}
+        <View style={{ gap: 8, marginBottom: 14 }}>
           {GOALS.map((g) => (
             <TouchableOpacity
               key={g.id}
-              onPress={() => {
-                setSel(g.id);
-                hapSel();
-                playMenuTick();
-              }}
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 14,
-                backgroundColor: sel === g.id ? g.color + "18" : "#ffffff",
-                borderWidth: 1.5,
-                borderColor:
-                  sel === g.id ? g.color + "77" : "rgba(148,163,184,0.3)",
-                borderRadius: 18,
-                padding: 16,
-              }}
+              onPress={() => { setSel(g.id); hapSel(); playMenuTick(); }}
+              style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: sel === g.id ? g.color + "18" : "#ffffff", borderWidth: 1.5, borderColor: sel === g.id ? g.color + "77" : "rgba(148,163,184,0.3)", borderRadius: 16, padding: 12 }}
             >
-              <View
-                style={{
-                  width: 52,
-                  height: 52,
-                  borderRadius: 14,
-                  backgroundColor: g.bg,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Text style={{ fontSize: 24 }}>{g.icon}</Text>
+              <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: g.bg, alignItems: "center", justifyContent: "center" }}>
+                <Text style={{ fontSize: 22 }}>{g.icon}</Text>
               </View>
               <View style={{ flex: 1 }}>
-                <Text
-                  style={{
-                    fontWeight: "800",
-                    fontSize: 15,
-                    color: sel === g.id ? g.color : "#1e293b",
-                    marginBottom: 3,
-                  }}
-                >
-                  {g.title}
-                </Text>
-                <Text style={{ fontSize: 12, color: "#94a3b8" }}>{g.sub}</Text>
+                <Text style={{ fontWeight: "800", fontSize: 14, color: sel === g.id ? g.color : "#1e293b", marginBottom: 2 }}>{g.title}</Text>
+                <Text style={{ fontSize: 11, color: "#94a3b8" }}>{g.sub}</Text>
               </View>
               {sel === g.id && (
-                <View
-                  style={{
-                    width: 22,
-                    height: 22,
-                    borderRadius: 11,
-                    backgroundColor: g.color,
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Text
-                    style={{ color: "#fff", fontWeight: "900", fontSize: 11 }}
-                  >
-                    ✓
-                  </Text>
+                <View style={{ width: 20, height: 20, borderRadius: 10, backgroundColor: g.color, alignItems: "center", justifyContent: "center" }}>
+                  <Text style={{ color: "#fff", fontWeight: "900", fontSize: 11 }}>✓</Text>
                 </View>
               )}
             </TouchableOpacity>
           ))}
-        </View>
-        {/* Online Class Card */}
-        <TouchableOpacity
-          onPress={() => {
-            hapSel();
-            playMenuTick();
-            if (onCustomSets) onCustomSets();
-          }}
-          style={{
-            width: "100%",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 14,
-            backgroundColor: "rgba(245,158,11,0.06)",
-            borderWidth: 1.5,
-            borderColor: "rgba(245,158,11,0.45)",
-            borderRadius: 18,
-            padding: 16,
-            marginTop: 4,
-          }}
-        >
-          <View
-            style={{
-              width: 52,
-              height: 52,
-              borderRadius: 14,
-              backgroundColor: "#1e1b4b",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text style={{ fontSize: 24 }}>🏫</Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 6,
-                marginBottom: 3,
-              }}
-            >
-              <Text
-                style={{ fontWeight: "800", fontSize: 15, color: "#6366f1" }}
-              >
-                Hazır Kelime Seti
-              </Text>
-              <View
-                style={{
-                  paddingHorizontal: 8,
-                  paddingVertical: 3,
-                  borderRadius: 50,
-                  backgroundColor: "#f59e0b",
-                  shadowColor: "#f59e0b",
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowOpacity: 0.5,
-                  shadowRadius: 6,
-                  elevation: 4,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 9,
-                    color: "#fff",
-                    fontWeight: "900",
-                    letterSpacing: 1,
-                  }}
-                >
-                  ✨ YENİ
-                </Text>
-              </View>
-            </View>
-            <Text style={{ fontSize: 12, color: "#94a3b8" }}>
-              6 haneli kod ile set paylaş & indir
-            </Text>
-          </View>
-          <Text style={{ fontSize: 18, color: "rgba(99,102,241,0.4)" }}>›</Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => {
-            if (sel) {
-              playMenuTick();
-              onSelect(sel);
-            }
-          }}
-          style={{
-            width: "100%",
-            paddingVertical: 16,
-            borderRadius: 50,
-            alignItems: "center",
-            backgroundColor: sel ? "#3b82f6" : "rgba(148,163,184,0.3)",
-            borderWidth: sel ? 0 : 1,
-            borderColor: "rgba(148,163,184,0.35)",
-            marginTop: 16,
-            marginBottom: Math.max(8, insets.bottom),
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "900",
-              color: sel ? "#fff" : "#94a3b8",
-              letterSpacing: 1.5,
-            }}
+          {/* Hazır Kelime Seti — aynı grup içinde */}
+          <TouchableOpacity
+            onPress={() => { hapSel(); playMenuTick(); if (onCustomSets) onCustomSets(); }}
+            style={{ flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "rgba(99,102,241,0.06)", borderWidth: 1.5, borderColor: "rgba(99,102,241,0.3)", borderRadius: 16, padding: 12 }}
           >
+            <View style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: "#1e1b4b", alignItems: "center", justifyContent: "center" }}>
+              <Text style={{ fontSize: 22 }}>🏫</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 2 }}>
+                <Text style={{ fontWeight: "800", fontSize: 14, color: "#6366f1" }}>Hazır Kelime Seti</Text>
+                <View style={{ paddingHorizontal: 6, paddingVertical: 2, borderRadius: 50, backgroundColor: "#f59e0b" }}>
+                  <Text style={{ fontSize: 9, color: "#fff", fontWeight: "900" }}>✨ YENİ</Text>
+                </View>
+              </View>
+              <Text style={{ fontSize: 11, color: "#94a3b8" }}>6 haneli kod ile set paylaş & indir</Text>
+            </View>
+            <Text style={{ fontSize: 18, color: "rgba(99,102,241,0.4)" }}>›</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Devam Et */}
+        <TouchableOpacity
+          onPress={() => { if (sel) { playMenuTick(); onSelect(sel); } }}
+          style={{ width: "100%", paddingVertical: 15, borderRadius: 50, alignItems: "center", backgroundColor: sel ? "#3b82f6" : "rgba(148,163,184,0.3)", marginBottom: 10 }}
+        >
+          <Text style={{ fontSize: 15, fontWeight: "900", color: sel ? "#fff" : "#94a3b8", letterSpacing: 1.5 }}>
             Devam Et →
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            hapSel();
-            setShowSupport(true);
-          }}
-          style={{
-            marginTop: 16,
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 6,
-            paddingVertical: 10,
-            paddingHorizontal: 20,
-            borderRadius: 50,
-            backgroundColor: "rgba(251,191,36,0.1)",
-            borderWidth: 1,
-            borderColor: "rgba(251,191,36,0.3)",
-          }}
-        >
-          <Text style={{ fontSize: 13 }}>☕</Text>
-          <Text style={{ fontSize: 12, color: "#d97706", fontWeight: "700" }}>
-            Reklamsız · Destek olmak ister misiniz?
-          </Text>
-        </TouchableOpacity>
-        <Text
-          style={{
-            fontSize: 10,
-            color: "#94a3b8",
-            marginTop: 10,
-            letterSpacing: 2,
-          }}
-        >
-          Ücretsiz · Offline çalışır
-        </Text>
-      </ScrollView>
+
+        {/* Alt bilgi */}
+        <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 12 }}>
+          <TouchableOpacity onPress={() => { hapSel(); setShowSupport(true); }} style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+            <Text style={{ fontSize: 12 }}>☕</Text>
+            <Text style={{ fontSize: 11, color: "#d97706", fontWeight: "700" }}>Destek Ol</Text>
+          </TouchableOpacity>
+          <Text style={{ fontSize: 11, color: "#cbd5e1" }}>·</Text>
+          <Text style={{ fontSize: 11, color: "#94a3b8" }}>Ücretsiz · Offline</Text>
+        </View>
+      </View>
     </View>
   );
 }
