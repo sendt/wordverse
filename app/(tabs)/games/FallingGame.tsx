@@ -14,6 +14,7 @@ import { W } from "../../../lib/dimensions";
 import { SREngine } from "../../../lib/sr-engine";
 import type { Level, Word } from "../../../words";
 import { GameHeader, PauseOverlay, SoundWarningBanner } from "../components/GameHeader";
+import { GameTutorialOverlay } from "../components/GameTutorialOverlay";
 
 const FALL_LIVES = 3;
 
@@ -131,6 +132,16 @@ export default function FallingGame({
         ))}
       </View>
       {paused && <PauseOverlay onResume={togglePause} onMenu={onBack} />}
+      <GameTutorialOverlay
+        gameId="falling"
+        title="🪂 Düşmeden Yakala"
+        icon="🪂"
+        steps={[
+          "Kelime yukarıdan düşüyor",
+          "Doğru Türkçe karşılığına dokun",
+          "Yere çakılmadan önce seç!",
+        ]}
+      />
 
       <View style={{ flex: 1, padding: 14 }}>
         {/* Düşüş alanı */}

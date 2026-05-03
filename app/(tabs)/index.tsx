@@ -18,6 +18,7 @@ import HomeScreen from "./screens/HomeScreen";
 import LearnedWordsScreen from "./screens/LearnedWordsScreen";
 import SetBuilderScreen from "./screens/SetBuilderScreen";
 import CustomSetsScreen from "./screens/CustomSetsScreen";
+import FlashcardScreen from "./screens/FlashcardScreen";
 
 import WordRushGame from "./games/WordRushGame";
 import FallingGame from "./games/FallingGame";
@@ -27,7 +28,7 @@ import PinballGame from "./games/PinballGame";
 
 export default function App() {
   const [screen, setScreen] = useState<
-    "goal" | "level" | "home" | "game" | "learned" | "sets" | "builder"
+    "goal" | "level" | "home" | "game" | "learned" | "sets" | "builder" | "flashcard"
   >("goal");
   const [goal, setGoal] = useState<Goal>("gunluk");
   const [level, setLevel] = useState<Level>("A1");
@@ -664,6 +665,13 @@ export default function App() {
       </View>
     );
   if (!sr) return null;
+  if (screen === "flashcard")
+    return (
+      <FlashcardScreen
+        sr={sr}
+        onDone={() => setScreen("home")}
+      />
+    );
   if (screen === "learned")
     return (
       <LearnedWordsScreen
@@ -758,6 +766,7 @@ export default function App() {
           onGoal={() => setScreen("goal")}
           onSets={() => setScreen("sets")}
           onShowLearned={() => setScreen("learned")}
+          onFlashcard={() => setScreen("flashcard")}
           speed={speed}
           onSpeedChange={setSpeed}
           activeSetName={activeSetName}

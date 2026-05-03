@@ -14,6 +14,7 @@ import { H, W } from "../../../lib/dimensions";
 import { SREngine } from "../../../lib/sr-engine";
 import type { Level, Word } from "../../../words";
 import { PauseOverlay, SoundWarningBanner } from "../components/GameHeader";
+import { GameTutorialOverlay } from "../components/GameTutorialOverlay";
 
 export default function PinballGame({
   sr, speed, level, onBack,
@@ -220,6 +221,16 @@ export default function PinballGame({
     <View style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: insets.bottom }}>
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
       {paused && <PauseOverlay onResume={togglePause} onMenu={onBack} />}
+      <GameTutorialOverlay
+        gameId="pinball"
+        title="🎱 Kelime Pinball"
+        icon="🎱"
+        steps={[
+          "Parmağını sürükle → küreği kontrol et",
+          "Topu doğru Türkçe kovaya düşür",
+          "En altta kürek var, kaçırma!",
+        ]}
+      />
 
       <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 14, paddingVertical: 10, backgroundColor: "#fff", borderBottomWidth: 1, borderBottomColor: "rgba(148,163,184,0.15)" }}>
         <TouchableOpacity onPress={() => { hapSel(); onBack(); }} style={{ paddingVertical: 8, paddingHorizontal: 13, backgroundColor: "#f1f5f9", borderRadius: 10, borderWidth: 1.5, borderColor: "rgba(148,163,184,0.3)" }}>

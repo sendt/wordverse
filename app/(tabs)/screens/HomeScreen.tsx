@@ -1,9 +1,10 @@
 import * as Haptics from "expo-haptics";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Linking, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { hap, hapSel, playMenuTick } from "../../../lib/audio";
 import { GAMES_META, GOALS, LEVELS, SPEEDS, SpeedMode, GameId } from "../../../lib/constants";
+import { getDailyProgress, DAILY_GOAL } from "../../../lib/daily-goal";
 import { W } from "../../../lib/dimensions";
 import { SREngine } from "../../../lib/sr-engine";
 import { showToast } from "../components/ToastHost";
@@ -31,11 +32,16 @@ export default function HomeScreen({
   onSets?: () => void;
   onGoal: () => void;
   onShowLearned: () => void;
+  onFlashcard?: () => void;
   speed: SpeedMode;
   onSpeedChange: (s: SpeedMode) => void;
   activeSetName?: string | null;
 }) {
   const insets = useSafeAreaInsets();
+  const [daily, setDaily] = useState({ done: 0, goal: DAILY_GOAL });
+  useEffect(() => {
+    getDailyProgress(sr.count()).then(setDaily);
+  }, [sr.count()]);
   const gm = GOALS.find((g) => g.id === goal)!;
   const lm = LEVELS.find((l) => l.id === level)!;
   // Bot widget computed values
@@ -243,6 +249,42 @@ export default function HomeScreen({
               </Text>
             )}
           </View>
+        </TouchableOpacity>
+
+        {/* Günlük Hedef */}
+        <TouchableOpacity
+          onPress={onFlashcard}
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 16,
+            padding: 14,
+            marginBottom: 16,
+            borderWidth: 1.5,
+            borderColor: daily.done >= daily.goal ? "rgba(34,197,94,0.4)" : "rgba(99,102,241,0.25)",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 12,
+          }}
+        >
+          <Text style={{ fontSize: 28 }}>{daily.done >= daily.goal ? "🏆" : "🎯"}</Text>
+          <View style={{ flex: 1 }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 6 }}>
+              <Text style={{ fontSize: 13, fontWeight: "800", color: "#1e1b4b" }}>
+                {daily.done >= daily.goal ? "Bugünkü hedef tamamlandı! 🎉" : "Bugünkü Hedef"}
+              </Text>
+              <Text style={{ fontSize: 13, fontWeight: "900", color: daily.done >= daily.goal ? "#22c55e" : "#6366f1" }}>
+                {daily.done}/{daily.goal}
+              </Text>
+            </View>
+            <View style={{ height: 6, backgroundColor: "#f1f5f9", borderRadius: 3, overflow: "hidden" }}>
+              <View style={{ height: "100%", width: `${Math.min((daily.done / daily.goal) * 100, 100)}%`, backgroundColor: daily.done >= daily.goal ? "#22c55e" : "#6366f1", borderRadius: 3 }} />
+            </View>
+          </View>
+          {onFlashcard && (
+            <View style={{ paddingHorizontal: 10, paddingVertical: 6, backgroundColor: "rgba(99,102,241,0.1)", borderRadius: 10 }}>
+              <Text style={{ fontSize: 11, color: "#6366f1", fontWeight: "800" }}>📖 İncele</Text>
+            </View>
+          )}
         </TouchableOpacity>
 
         {/* Ayarlar dişli çark — sağ üst köşede zaten var, toggle'lar modal'e taşındı */}

@@ -15,6 +15,7 @@ import { H, W } from "../../../lib/dimensions";
 import { SREngine } from "../../../lib/sr-engine";
 import type { Level, Word } from "../../../words";
 import { PauseOverlay, SoundWarningBanner, WordToast } from "../components/GameHeader";
+import { GameTutorialOverlay } from "../components/GameTutorialOverlay";
 
 // ─── Rush constants ──────────────────────────────────────────
 const RUSH_LIVES = 5;
@@ -264,6 +265,16 @@ export default function WordRushGame({
   return (
     <View style={{ flex: 1, backgroundColor: "#1a1a2e", paddingTop: insets.top, paddingBottom: insets.bottom }}>
       {pausedRush && <PauseOverlay onResume={togglePauseRush} onMenu={onBack} />}
+      <GameTutorialOverlay
+        gameId="rush"
+        title="🚗 Araba Oyunu"
+        icon="🚗"
+        steps={[
+          "Parmağını sürükle → arabayı yönlendir",
+          "Doğru Türkçe kapıdan geç",
+          "Yanlış kapıya girersen can kaybedersin",
+        ]}
+      />
       <StatusBar backgroundColor="#1a1a2e" barStyle="light-content" />
 
       {/* Header */}

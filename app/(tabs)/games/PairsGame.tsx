@@ -14,6 +14,7 @@ import { W } from "../../../lib/dimensions";
 import { SREngine } from "../../../lib/sr-engine";
 import type { Level, Word } from "../../../words";
 import { PauseOverlay, SoundWarningBanner } from "../components/GameHeader";
+import { GameTutorialOverlay } from "../components/GameTutorialOverlay";
 
 const BOMB_SEC = 60;
 
@@ -207,6 +208,16 @@ export default function PairsGame({
       </View>
 
       {pausedPairs && <PauseOverlay onResume={togglePausePairs} onMenu={onBack} />}
+      <GameTutorialOverlay
+        gameId="pairs"
+        title="🃏 Hafıza Kartları"
+        icon="🃏"
+        steps={[
+          "Kartları çevir, eşleri bul",
+          "EN ve TR kartlarını eşleştir",
+          "60 saniyede bitir — patlama olmasın!",
+        ]}
+      />
       {timeUp && !won && <BombExplosion onDone={newGame} />}
 
       {won && (

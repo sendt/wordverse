@@ -13,6 +13,7 @@ import { SpeedMode } from "../../../lib/constants";
 import { SREngine } from "../../../lib/sr-engine";
 import type { Level, Word } from "../../../words";
 import { PauseOverlay, SoundWarningBanner } from "../components/GameHeader";
+import { GameTutorialOverlay } from "../components/GameTutorialOverlay";
 
 const MATCH_TIME = 45;
 
@@ -113,6 +114,16 @@ export default function MatchGame({
     <View style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: insets.bottom }}>
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
       {pausedMatch && <PauseOverlay onResume={togglePauseMatch} onMenu={onBack} />}
+      <GameTutorialOverlay
+        gameId="match"
+        title="🔗 Eşleştir"
+        icon="🔗"
+        steps={[
+          "Soldaki İngilizce kelimeye dokun",
+          "Sağdaki Türkçe karşılığını seç",
+          "Hepsini eşleştir, süre dolmadan!",
+        ]}
+      />
       <SoundWarningBanner />
       <View style={{ flexDirection: "row", alignItems: "center", paddingHorizontal: 14, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: "rgba(148,163,184,0.15)" }}>
         <TouchableOpacity onPress={() => { hapSel(); onBack(); }} style={{ paddingVertical: 6, paddingHorizontal: 10, backgroundColor: "#fff", borderRadius: 10, borderWidth: 1, borderColor: "rgba(148,163,184,0.25)" }}>
