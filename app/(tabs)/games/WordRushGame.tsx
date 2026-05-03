@@ -118,7 +118,7 @@ export default function WordRushGame({
       onStartShouldSetPanResponderCapture: () => true,
       onPanResponderGrant: (e) => {
         if (isOver.current) return;
-        const { left, right } = roadEdge(bYR.current, gameH);
+        const { left, right } = roadEdge(bYR.current, gvHRef.current);
         const x = Math.max(left + 24, Math.min(right - 24, e.nativeEvent.pageX));
         const rawYG = e.nativeEvent.pageY - (insets?.top ?? 0) - 80;
         const y = Math.max(H * HORIZ_Y + 40, Math.min(gvHRef.current * 0.9, rawYG));
@@ -127,7 +127,7 @@ export default function WordRushGame({
       },
       onPanResponderMove: (e) => {
         if (isOver.current) return;
-        const { left, right } = roadEdge(bYR.current, gameH);
+        const { left, right } = roadEdge(bYR.current, gvHRef.current);
         const x = Math.max(left + 24, Math.min(right - 24, e.nativeEvent.pageX));
         const rawY = e.nativeEvent.pageY - (insets?.top ?? 0) - 80;
         const y = Math.max(H * HORIZ_Y + 40, Math.min(gvHRef.current * 0.9, rawY));
@@ -180,7 +180,7 @@ export default function WordRushGame({
         const carY = bYR.current, carX = bXR.current;
         const gateTop = gate.y - GATE_H * 0.5, gateBot = gate.y + GATE_H * 0.5;
         if (gateTop > carY + 20 || gateBot < carY - 20) return gate;
-        const { left, right } = roadEdge(carY, gameH);
+        const { left, right } = roadEdge(carY, gvHRef.current);
         const isLeft = carX < W / 2;
         const hit = isLeft === gate.cLeft;
         if (hit) {
