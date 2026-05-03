@@ -4,7 +4,7 @@ import { Alert, FlatList, Linking, ScrollView, SectionList, StatusBar, Text, Tex
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { downloadSet, uploadSet } from "../../../firebase";
 import { hap, hapSel } from "../../../lib/audio";
-import { CustomSet } from "../../../lib/constants";
+import { CustomSet, MAX_CUSTOM_SETS } from "../../../lib/constants";
 import { W } from "../../../lib/dimensions";
 import { showToast } from "../components/ToastHost";
 import { WORD_BANKS as ALL_WORDS } from "../../../words";

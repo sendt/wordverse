@@ -1,9 +1,10 @@
 import * as Haptics from "expo-haptics";
 import React, { useState } from "react";
-import { ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { hap, hapSel, playMenuTick } from "../../../lib/audio";
 import { GAMES_META, GOALS, LEVELS, SPEEDS, SpeedMode, GameId } from "../../../lib/constants";
+import { W } from "../../../lib/dimensions";
 import { SREngine } from "../../../lib/sr-engine";
 import { showToast } from "../components/ToastHost";
 import { Screen } from "../components/GameHeader";

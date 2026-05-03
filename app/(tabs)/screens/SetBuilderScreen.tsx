@@ -1,9 +1,9 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Alert, FlatList, SectionList, StatusBar, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { hap, hapSel } from "../../../lib/audio";
 import { CustomSet } from "../../../lib/constants";
-import { W } from "../../../lib/dimensions";
+import { H, W } from "../../../lib/dimensions";
 import { WORD_BANKS as ALL_WORDS } from "../../../words";
 import type { Word } from "../../../words";
 

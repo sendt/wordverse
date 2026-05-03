@@ -7,7 +7,21 @@
       "mcp__Claude_in_Chrome__find",
       "mcp__Claude_in_Chrome__browser_batch",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Bash(git commit -m 'İnternet yokken nazik hata mesajı göster *)",
+      "Bash(git commit -m 'Arka plan müziğini kaldır \\(geçici\\) *)",
+      "mcp__Claude_in_Chrome__get_page_text",
+      "Bash(git commit -m 'Sentry crash reporting entegrasyonu eklendi *)",
+      "Bash(git commit -m 'Navigasyon çubuğu için paddingBottom eksikliği düzeltildi *)",
+      "Bash(git commit -m 'SafeAreaProvider eklendi — insets.bottom artık çalışıyor *)",
+      "Bash(git commit -m 'Android navigasyon çubuğu için minimum 32dp paddingBottom garantisi *)",
+      "Bash(git commit -m 'Tüm oyun ekranlarına paddingBottom eklendi *)",
+      "Bash(git commit -m 'paddingBottom minimumu 32'\\\\''den 56dp'\\\\''ye çıkarıldı *)",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(npx expo *)"
     ]
   }
 }
