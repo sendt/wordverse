@@ -447,7 +447,7 @@ export default function GoalScreen({
             }}
           >
             <Image
-              source={require("../../assets/icon.png")}
+              source={require("../../../assets/icon.png")}
               style={{
                 width: 88,
                 height: 88,
