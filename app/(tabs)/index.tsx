@@ -638,6 +638,7 @@ function Screen({
         flex: 1,
         backgroundColor: bg,
         paddingTop: insets.top,
+        paddingBottom: insets.bottom,
         ...style,
       }}
     >
@@ -1844,7 +1845,7 @@ function LevelScreen({
   const gm = GOALS.find((g) => g.id === goal)!;
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: insets.bottom }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
       {/* Compact header */}
@@ -2117,7 +2118,7 @@ function LearnedWordsScreen({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f8faff", paddingTop: insets.top }}
+      style={{ flex: 1, backgroundColor: "#f8faff", paddingTop: insets.top, paddingBottom: insets.bottom }}
     >
       <StatusBar backgroundColor="#f8faff" barStyle="dark-content" />
       <View
@@ -2248,7 +2249,7 @@ function LearnedWordsScreen({
         </View>
       )}
 
-      <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: Math.max(40, insets.bottom + 16) }}>
         {filtered.map((item, idx) => (
           <View
             key={item.word.en}
@@ -2938,15 +2939,15 @@ const ROAD_W_BOT = W * 0.88; // altta yol genişliği
 const ROAD_W_TOP = W * 0.22; // üstte yol genişliği
 
 // Verilen y koordinatına göre yolun sol/sağ kenarını hesapla
-const roadEdge = (y: number) => {
-  const pct = Math.max(0, Math.min(1, (y / H - HORIZ_Y) / (1 - HORIZ_Y)));
+const roadEdge = (y: number, h: number = H) => {
+  const pct = Math.max(0, Math.min(1, (y / h - HORIZ_Y) / (1 - HORIZ_Y)));
   const half = ROAD_W_TOP / 2 + (ROAD_W_BOT / 2 - ROAD_W_TOP / 2) * pct;
   return { left: W / 2 - half, right: W / 2 + half, width: half * 2, pct };
 };
 
 // Gate y pozisyonuna göre ölçek
-const gateScale = (y: number) => {
-  const { pct } = roadEdge(y);
+const gateScale = (y: number, h: number = H) => {
+  const { pct } = roadEdge(y, h);
   return 0.1 + pct * 0.9;
 };
 
@@ -3136,12 +3137,13 @@ function WordRushGame({
   onBack: () => void;
 }) {
   const insets = useSafeAreaInsets();
+  const gameH = H - insets.bottom; // nav bar altına içerik kaymaz
   const base = SPEEDS[speed].base,
     isAuto = speed === "auto";
   const bXA = useRef(new Animated.Value(W / 2)).current;
   const bXR = useRef(W / 2);
-  const bYA = useRef(new Animated.Value(BALL_Y)).current;
-  const bYR = useRef(BALL_Y);
+  const bYA = useRef(new Animated.Value(gameH * 0.82)).current;
+  const bYR = useRef(gameH * 0.82);
   const spdR = useRef(base),
     strR = useRef(0),
     livesR = useRef(RUSH_LIVES);
@@ -3174,13 +3176,13 @@ function WordRushGame({
       onStartShouldSetPanResponderCapture: () => true,
       onPanResponderGrant: (e) => {
         if (isOver.current) return;
-        const { left, right } = roadEdge(bYR.current);
+        const { left, right } = roadEdge(bYR.current, gameH);
         const x = Math.max(
           left + 24,
           Math.min(right - 24, e.nativeEvent.pageX),
         );
         const rawYG = e.nativeEvent.pageY - (insets?.top ?? 0) - 80;
-        const y = Math.max(H * HORIZ_Y + 40, Math.min(H * 0.9, rawYG));
+        const y = Math.max(H * HORIZ_Y + 40, Math.min(gameH * 0.9, rawYG));
         bXR.current = x;
         bXA.setValue(x);
         bYR.current = y;
@@ -3188,13 +3190,13 @@ function WordRushGame({
       },
       onPanResponderMove: (e, gs) => {
         if (isOver.current) return;
-        const { left, right } = roadEdge(bYR.current);
+        const { left, right } = roadEdge(bYR.current, gameH);
         const x = Math.max(
           left + 24,
           Math.min(right - 24, e.nativeEvent.pageX),
         );
         const rawY = e.nativeEvent.pageY - (insets?.top ?? 0) - 80;
-        const y = Math.max(H * HORIZ_Y + 40, Math.min(H * 0.9, rawY));
+        const y = Math.max(H * HORIZ_Y + 40, Math.min(gameH * 0.9, rawY));
         bXR.current = x;
         bXA.setValue(x);
         bYR.current = y;
@@ -3265,7 +3267,7 @@ function WordRushGame({
         const gateBot = gate.y + GATE_H * 0.5;
         if (gateTop > carY + 20 || gateBot < carY - 20) return gate;
         // X: araba hangi şeritte?
-        const { left, right } = roadEdge(carY);
+        const { left, right } = roadEdge(carY, gameH);
         const isLeft = carX < W / 2;
         const hit = isLeft === gate.cLeft;
         if (hit) {
@@ -3315,7 +3317,7 @@ function WordRushGame({
         changed = true;
         return { ...gate, state: hit ? ("ok" as const) : ("bad" as const) };
       });
-      list = list.filter((g) => g.y < H + 100 && g.opacity > 0.02);
+      list = list.filter((g) => g.y < gameH + 100 && g.opacity > 0.02);
       if (!list.find((g) => g.state === "fall") && !isOver.current) {
         const nx = makeGate(sr);
         list = [...list, nx];
@@ -3367,7 +3369,7 @@ function WordRushGame({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#1a1a2e", paddingTop: insets.top }}
+      style={{ flex: 1, backgroundColor: "#1a1a2e", paddingTop: insets.top, paddingBottom: insets.bottom }}
     >
       {pausedRush && (
         <PauseOverlay onResume={togglePauseRush} onMenu={onBack} />
@@ -3511,7 +3513,7 @@ function WordRushGame({
             top: 0,
             left: 0,
             right: 0,
-            height: H * HORIZ_Y,
+            height: gameH * HORIZ_Y,
             backgroundColor: "#1e2d3d",
             opacity: 0.6,
           }}
@@ -3521,9 +3523,9 @@ function WordRushGame({
         {Array.from({ length: 22 }).map((_, i) => {
           const spacing = 55;
           const rawY = H * HORIZ_Y + i * spacing + roadOffset - spacing;
-          if (rawY < H * HORIZ_Y - 10 || rawY > H) return null;
-          const t = Math.max(0, (rawY / H - HORIZ_Y) / (1 - HORIZ_Y));
-          const { left, right } = roadEdge(rawY);
+          if (rawY < H * HORIZ_Y - 10 || rawY > gameH) return null;
+          const t = Math.max(0, (rawY / gameH - HORIZ_Y) / (1 - HORIZ_Y));
+          const { left, right } = roadEdge(rawY, gameH);
           const thick = Math.max(2, t * 6);
           const h = Math.max(3, t * 10);
           return (
@@ -3560,8 +3562,8 @@ function WordRushGame({
         {Array.from({ length: 22 }).map((_, i) => {
           const spacing = 60;
           const rawY = H * HORIZ_Y + i * spacing + roadOffset - spacing;
-          if (rawY < H * HORIZ_Y || rawY > H) return null;
-          const t = (rawY / H - HORIZ_Y) / (1 - HORIZ_Y);
+          if (rawY < H * HORIZ_Y || rawY > gameH) return null;
+          const t = (rawY / gameH - HORIZ_Y) / (1 - HORIZ_Y);
           const h = Math.max(4, t * 28);
           return (
             <View
@@ -3581,8 +3583,8 @@ function WordRushGame({
 
         {/* Kapılar */}
         {gates.map((gate) => {
-          const sc2 = gateScale(gate.y);
-          const { left, width } = roadEdge(gate.y);
+          const sc2 = gateScale(gate.y, gameH);
+          const { left, width } = roadEdge(gate.y, gameH);
           const lG = gate.state === "ok" && gate.cLeft,
             rG = gate.state === "ok" && !gate.cLeft;
           const lR = gate.state === "bad" && gate.cLeft,
@@ -3954,6 +3956,7 @@ function FallingGame({
             ? "#fff1f2"
             : "#f0f9ff",
         paddingTop: insets.top,
+        paddingBottom: insets.bottom,
       }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
@@ -4401,7 +4404,7 @@ function MatchGame({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: insets.bottom }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
       {pausedMatch && (
@@ -4929,7 +4932,7 @@ function PairsGame({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f8faff", paddingTop: insets.top }}
+      style={{ flex: 1, backgroundColor: "#f8faff", paddingTop: insets.top, paddingBottom: insets.bottom }}
     >
       <StatusBar backgroundColor="#f8faff" barStyle="dark-content" />
       <SoundWarningBanner />
@@ -5283,9 +5286,9 @@ function PinballGame({
   const spd = SPEEDS[speed];
   const SPEED_MULT = spd.base / 90;
 
-  // Layout — game area height computed after header (~180px)
+  // Layout — game area height computed after header (~180px) and nav bar
   const HEADER_H = insets.top + 175;
-  const GAME_H = H - HEADER_H;
+  const GAME_H = H - HEADER_H - insets.bottom;
   const BALL_R2 = 18;
   const PAD_W = W / 3;
   const PAD_H = 14;
@@ -5617,7 +5620,7 @@ function PinballGame({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: insets.bottom }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
       {paused && <PauseOverlay onResume={togglePause} onMenu={onBack} />}
@@ -6278,7 +6281,7 @@ function SetBuilderScreen({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: insets.bottom }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
 
@@ -6648,7 +6651,7 @@ function SetBuilderScreen({
                     </TouchableOpacity>
                   ) : null
                 }
-                contentContainerStyle={{ paddingBottom: 100 }}
+                contentContainerStyle={{ paddingBottom: insets.bottom + 20 }}
               />
             ) : (
               // Alfabetik SectionList
@@ -6710,7 +6713,7 @@ function SetBuilderScreen({
                   ) : null
                 }
                 contentContainerStyle={{
-                  paddingBottom: 100,
+                  paddingBottom: insets.bottom + 20,
                   paddingRight: Math.max(28, Math.min(42, W * 0.09)) + 4,
                 }}
                 stickySectionHeadersEnabled={true}
@@ -6842,7 +6845,7 @@ function SetBuilderScreen({
         <FlatList
           data={selected}
           keyExtractor={(item) => item.en}
-          contentContainerStyle={{ padding: 12, paddingBottom: 100 }}
+          contentContainerStyle={{ padding: 12, paddingBottom: insets.bottom + 20 }}
           ListEmptyComponent={
             <View style={{ alignItems: "center", paddingVertical: 40 }}>
               <Text
@@ -6971,7 +6974,7 @@ function CustomSetsScreen({
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top }}
+      style={{ flex: 1, backgroundColor: "#f0f4ff", paddingTop: insets.top, paddingBottom: insets.bottom }}
     >
       <StatusBar backgroundColor="#f0f4ff" barStyle="dark-content" />
 
